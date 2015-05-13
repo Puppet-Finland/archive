@@ -30,5 +30,5 @@ example42/puppet-modules/common/README file:
     custom functions added by Lab42
     info@lab42.it
 
-Changes made after adaptation to Puppet-Finland module collection are (C) 2014 
-OpenVPN Technologies, Inc and Samuli Seppänen.
+Changes made after adaptation to Puppet-Finland module collection are (C) 
+2014-2015 OpenVPN Technologies, Inc and Samuli Seppänen.

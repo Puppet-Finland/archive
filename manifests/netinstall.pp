@@ -9,13 +9,12 @@ define archive::netinstall
     $url,
     $extracted_dir,
     $destination_dir,
-    $owner = "root",
-    $group = "root",
-    $work_dir = "/tmp",
-    $extract_command = "tar -zxvf",
-    $preextract_command = "",
-    $postextract_command = ""
-    # $postextract_command = "./configure ; make ; make install"
+    $owner = 'root',
+    $group = 'root',
+    $work_dir = '/tmp',
+    $extract_command = 'tar -zxvf',
+    $preextract_command = undef,
+    $postextract_command = undef
 )
 {
 
@@ -24,38 +23,38 @@ define archive::netinstall
     $path = [ '/bin', '/usr/bin', '/usr/local/bin' ]
 
     if $preextract_command {
-        exec { "PreExtract $source_filename":
-            command => $preextract_command,
-            before  => Exec["Extract $source_filename"],
+        exec { "PreExtract ${source_filename}":
+            command     => $preextract_command,
+            before      => Exec["Extract ${source_filename}"],
             refreshonly => true,
-            path => $path
+            path        => $path
         }
     }
 
-    exec { "Retrieve $url":
-        cwd     => "$work_dir",
-        command => "wget $url",
-        creates => "$work_dir/$source_filename",
+    exec { "Retrieve ${url}":
+        cwd     => $work_dir,
+        command => "wget ${url}",
+        creates => "${work_dir}/${source_filename}",
         timeout => 3600,
-        path => $path
+        path    => $path
     }
 
-    exec { "Extract $source_filename":
-        command => "mkdir -p $destination_dir && cd $destination_dir && $extract_command $work_dir/$source_filename",
+    exec { "Extract ${source_filename}":
+        command => "mkdir -p ${destination_dir} && cd ${destination_dir} && ${extract_command} ${work_dir}/${source_filename}",
         creates => "${destination_dir}/${extracted_dir}",
-        require => Exec["Retrieve $url"],
-        path => $path
+        require => Exec["Retrieve ${url}"],
+        path    => $path
     }
 
     if $postextract_command {
-        exec { "PostExtract $source_filename":
-            command => $postextract_command,
-            cwd => "$destination_dir/$extracted_dir",
-            subscribe => Exec["Extract $source_filename"],
+        exec { "PostExtract ${source_filename}":
+            command     => $postextract_command,
+            cwd         => "${destination_dir}/${extracted_dir}",
+            subscribe   => Exec["Extract ${source_filename}"],
             refreshonly => true,
-            timeout => 3600,
-            require => Exec["Retrieve $url"],    
-            path => $path
+            timeout     => 3600,
+            require     => Exec["Retrieve ${url}"],
+            path        => $path
         }
     }
 }

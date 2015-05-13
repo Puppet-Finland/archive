@@ -1,0 +1,11 @@
+{
+  "name": "puppetfinland-archive",
+  "version": "0.3.1",
+  "author": "Puppet-Finland team",
+  "license": "BSD license",
+  "summary": "Setup archive",
+  "source": "https://github.com/Puppet-Finland/archive.git",
+  "project_page": "https://github.com/Puppet-Finland/archive",
+  "dependencies": [
+  ]
+}
